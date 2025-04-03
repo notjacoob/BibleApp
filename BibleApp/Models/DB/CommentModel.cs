@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BibleApp.Models.DB;
 
+/// <summary>
+/// database model for comments
+/// </summary>
 [Table("v_comments")]
 [PrimaryKey("Id")]
 public class CommentModel

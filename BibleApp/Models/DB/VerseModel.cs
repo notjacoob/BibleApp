@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BibleApp.Models.DB;
 
+/// <summary>
+/// database model for verse
+/// </summary>
 [Table("t_asv")]
 [PrimaryKey("Id")]
 public class VerseModel

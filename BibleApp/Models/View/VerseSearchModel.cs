@@ -2,6 +2,9 @@
 
 namespace BibleApp.Models.View;
 
+/// <summary>
+/// model for submitting a verse search
+/// </summary>
 public class VerseSearchModel
 {
     [Required]

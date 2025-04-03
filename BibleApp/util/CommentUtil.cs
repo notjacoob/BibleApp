@@ -4,9 +4,17 @@ using BibleApp.Models.View;
 using Microsoft.EntityFrameworkCore;
 
 namespace BibleApp.util;
-
+/// <summary>
+/// comment business layer
+/// </summary>
+/// <param name="config">injected</param>
 public class CommentUtil(IConfiguration config)
 {
+    /// <summary>
+    /// Create a comment
+    /// </summary>
+    /// <param name="viewModel">the view model</param>
+    /// <returns>the model of the new comment</returns>
     public async Task<CommentModel> Create(AddCommentModel viewModel)
     {
         await using var ctx = new CommentsDataContext(config);
@@ -15,7 +23,10 @@ public class CommentUtil(IConfiguration config)
         await ctx.SaveChangesAsync();
         return c;
     }
-
+    /// <summary>
+    /// Delete a comment
+    /// </summary>
+    /// <param name="commentId">the ID of the comment to delete</param>
     public async Task Delete(int commentId)
     {
         await using var ctx = new CommentsDataContext(config);

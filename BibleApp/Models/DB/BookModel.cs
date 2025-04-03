@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BibleApp.Models.DB;
 
+/// <summary>
+/// Database model for books
+/// </summary>
 [Table("key_english")]
 [PrimaryKey("BookId")]
 public class BookModel

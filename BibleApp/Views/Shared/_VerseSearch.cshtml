@@ -23,7 +23,7 @@
             <span class="badge bg-primary">@v.FoundIn</span>
             <span class="badge bg-primary">@v.VerseVm.Testament</span>
             <span class="badge bg-secondary"><span id="comment-count-num-@v.VerseVm.VerseId">@v.VerseVm.CommentCount</span> comments</span>
-            @Html.Partial("_Verse", VerseUtil.FromSearchModel(v))
+            @Html.Partial("_Verse", v.VerseVm)
         </li>
     }
 </ul>

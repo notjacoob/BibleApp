@@ -1,5 +1,8 @@
 ﻿namespace BibleApp.Models.View;
 
+/// <summary>
+/// model for displaying a verse
+/// </summary>
 public class VerseViewModel
 {
     public string VerseTitle { get; set; }
