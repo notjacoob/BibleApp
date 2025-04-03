@@ -1,0 +1,11 @@
+@model BibleApp.Models.DB.CommentModel
+<li class="list-group-item d-flex flex-row justify-content-between align-items-center comment-li" id="comment-@Model.Id">
+    <div class="d-flex flex-row align-items-center justify-content-center gap-1 text-center">
+        <a class="btn-close" style="cursor: pointer;" onclick="deleteComment(@Model.VerseId, @Model.Id)"></a>
+        <hr class="vr my-0 mx-1"/>
+        <p class="my-0" style="overflow-wrap: anywhere; text-align: left; vertical-align: middle;">
+            @Model.Content
+        </p>
+    </div>
+    <span class="ms-1 badge bg-secondary-subtle" style="color: white;">@Model.CreatedAt</span>
+</li>

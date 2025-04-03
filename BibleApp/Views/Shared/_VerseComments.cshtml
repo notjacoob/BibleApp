@@ -1,0 +1,34 @@
+@using BibleApp.util
+@model BibleApp.Models.DB.VerseModel
+@inject VerseUtil VerseUtil
+
+<div class="modal fade" tabindex="-1" role="dialog" id="comments-modal">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header justify-content-between">
+                <h5 class="modal-title">Comments for @VerseUtil.FullVerseName(Model)</h5>
+                <a class="btn-close" data-dismiss="modal" aria-label="Close" onclick="hideCommentsModal()">
+                </a>
+            </div>
+            <div class="modal-body w-100">
+                <ul class="list-group w-100" id="comments-listgroup">
+                    @if (Model.Comments.Count == 0)
+                    {
+                        <!-- do not reuse id -->
+                        <li id="no-comments" class="list-group-item text-center">No comments!</li>
+                    }
+                    @foreach (var c in Model.Comments)
+                    {
+                        @Html.Partial("_CommentLi", c)
+                    }
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <div id="comment-input" class="w-100 d-flex flex-column gap-1">
+                    <button class="btn btn-primary" onclick="toggleCommentInput(@Model.Id)">Add Comment</button>
+                    <!-- replaced in JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

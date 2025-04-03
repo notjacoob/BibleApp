@@ -1,0 +1,15 @@
+@model BibleApp.Models.View.ChapterSelectorViewModel
+
+<div id="chapter-selector">
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="chapterSelectorButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Select a chapter
+        </button>
+        <div class="dropdown-menu" style="max-height: 35rem; overflow-y: scroll;">
+            @for (var i = 1; i <= Model.ChapterCount; i++)
+            {
+                <a class="dropdown-item" onclick="loadChapter(@Model.Book.BookId, @i)">@i</a>
+            }
+        </div>
+    </div>
+</div>

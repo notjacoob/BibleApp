@@ -1,0 +1,31 @@
+@using BibleApp.util
+@model IEnumerable<BibleApp.Models.DB.BookModel>
+@inject BookUtil BookUtil
+
+<div class="dropdown" id="book-selector">
+    <button class="btn btn-primary dropdown-toggle" type="button" id="bookSelectorBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Select a book
+    </button>
+    <div id="book-names" style="display: none;">
+         @foreach (var ba in Model)
+         {
+             <input id="book-name-@ba.BookId" type="hidden" value="@ba.BookName"/>
+         }
+    </div>
+    <div class="dropdown-menu" style="max-height: 35rem; overflow-y: scroll;">
+        @{
+            var cl = BookUtil.DivideByTestaments(Model);
+        }
+        <h6 class="dropdown-header">Old Testament</h6>
+        @foreach (var b in cl.Ot)
+        {
+            <a class="dropdown-item" onclick="loadBook(@b.BookId, '@b.BookName')">@b.BookName</a>
+        }
+        <div class="dropdown-divider"></div>
+        <h6 class="dropdown-header">New Testament</h6>
+        @foreach (var b in cl.Nt)
+        {
+            <a class="dropdown-item" onclick="loadBook(@b.BookId, '@b.BookName')">@b.BookName</a>
+        }
+    </div>
+</div>

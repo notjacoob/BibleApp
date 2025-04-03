@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BibleApp", "BibleApp\BibleApp.csproj", "{133A6775-9A53-495B-8733-A9BDD68693EA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{133A6775-9A53-495B-8733-A9BDD68693EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{133A6775-9A53-495B-8733-A9BDD68693EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{133A6775-9A53-495B-8733-A9BDD68693EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{133A6775-9A53-495B-8733-A9BDD68693EA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
