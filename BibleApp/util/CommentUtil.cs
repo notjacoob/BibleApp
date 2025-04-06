@@ -8,7 +8,7 @@ namespace BibleApp.util;
 /// comment business layer
 /// </summary>
 /// <param name="config">injected</param>
-public class CommentUtil(IConfiguration config)
+public class CommentUtil(DbAccessor config)
 {
     /// <summary>
     /// Create a comment

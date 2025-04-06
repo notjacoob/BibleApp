@@ -10,7 +10,7 @@ namespace BibleApp.util;
 /// Verse business layer
 /// </summary>
 /// <param name="config">injected</param>
-public class VerseUtil(IConfiguration config)
+public class VerseUtil(DbAccessor config)
 {
     /// <summary>
     /// Get a verse by its ID

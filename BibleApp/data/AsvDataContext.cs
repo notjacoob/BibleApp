@@ -8,7 +8,7 @@ namespace BibleApp.data;
 /// chapter -> verse data context
 /// </summary>
 /// <param name="configuration"></param>
-public class AsvDataContext(IConfiguration configuration) : DbContext
+public class AsvDataContext(DbAccessor accessor) : DbContext
 {
     /// <summary>
     /// Database set of verse models
@@ -20,7 +20,7 @@ public class AsvDataContext(IConfiguration configuration) : DbContext
     /// <param name="optionsBuilder"></param>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var conn = configuration["ConnectionStrings:local"];
+        var conn = accessor.GetConnectionString();
         optionsBuilder.UseSqlServer(conn);
     }
     /// <summary>

@@ -1,3 +1,4 @@
+using BibleApp.data;
 using BibleApp.util;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<VerseUtil, VerseUtil>();
 builder.Services.AddScoped<CommentUtil, CommentUtil>();
 builder.Services.AddScoped<BookUtil, BookUtil>();
+builder.Services.AddScoped<DbAccessor, DbAccessor>();
 
 var app = builder.Build();
 

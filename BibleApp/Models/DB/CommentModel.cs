@@ -12,6 +12,8 @@ namespace BibleApp.Models.DB;
 public class CommentModel
 {
     [Column("id")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [ScaffoldColumn(false)]
     [Key]
     public int Id { get; set; }
     [Column("t")]

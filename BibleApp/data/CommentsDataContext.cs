@@ -6,7 +6,7 @@ namespace BibleApp.data;
 /// verse -> comments data context
 /// </summary>
 /// <param name="configuration"></param>
-public class CommentsDataContext(IConfiguration configuration) : DbContext
+public class CommentsDataContext(DbAccessor dbAccessor) : DbContext
 {
     /// <summary>
     /// Database set of comment models
@@ -18,7 +18,7 @@ public class CommentsDataContext(IConfiguration configuration) : DbContext
     /// <param name="optionsBuilder"></param>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var conn = configuration["ConnectionStrings:local"];
+        var conn = dbAccessor.GetConnectionString();
         optionsBuilder.UseSqlServer(conn);
     }
     /// <summary>

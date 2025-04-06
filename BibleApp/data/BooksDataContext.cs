@@ -7,7 +7,7 @@ namespace BibleApp.data;
 /// book data context
 /// </summary>
 /// <param name="configuration"></param>
-public class BooksDataContext(IConfiguration configuration) : DbContext
+public class BooksDataContext(DbAccessor dbAccessor) : DbContext
 {
     /// <summary>
     /// Database set of book models
@@ -19,7 +19,7 @@ public class BooksDataContext(IConfiguration configuration) : DbContext
     /// <param name="optionsBuilder"></param>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var conn = configuration["ConnectionStrings:local"];
+        var conn = dbAccessor.GetConnectionString();
         optionsBuilder.UseSqlServer(conn);
     }
     /// <summary>

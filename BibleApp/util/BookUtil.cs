@@ -9,7 +9,7 @@ namespace BibleApp.util;
 /// </summary>
 /// <param name="config">injected</param>
 /// <param name="verseUtil">injected</param>
-public class BookUtil(IConfiguration config, VerseUtil verseUtil)
+public class BookUtil(DbAccessor config, VerseUtil verseUtil)
 {
     /// <summary>
     /// get the number of chapters within a book
