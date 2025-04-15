@@ -188,9 +188,10 @@ function copyVerse(id, event) {
     window.event.cancelBubble = true
     // get the verse title and text from their invisible metadata fields
     const title = $(`#verse-title-${id}`).html()
-    const text = $(`#verse-text-${id}`).html()
+    const text = $(`#verse-text-${id}`).html().replaceAll("<span class=\"highlight\">", "").replaceAll("</span>", "")
     // write the text to the clipboard
-    navigator.clipboard.writeText(`${title} - \"${text}\"`).then(r => {
+    navigator.clipboard.writeText(
+        `${title} - \"${text}\"`).then(r => {
         // show the success alert for 2000ms
         const ssa = $("#share-success-alert")
         ssa.show()

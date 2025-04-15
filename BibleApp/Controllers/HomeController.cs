@@ -20,6 +20,7 @@ public class HomeController(VerseUtil verseUtil, CommentUtil commentUtil, BookUt
     /// <returns>Index.cshtml</returns>
     public IActionResult Index()
     {
+        ViewData["Title"] = "Home";
         return View();
     }
     /// <summary>
@@ -46,6 +47,7 @@ public class HomeController(VerseUtil verseUtil, CommentUtil commentUtil, BookUt
     /// <returns>Search.cshtml</returns>
     public IActionResult Search()
     {
+        ViewData["Title"] = "Search";
         return View();
     }
     /// <summary>
@@ -55,6 +57,7 @@ public class HomeController(VerseUtil verseUtil, CommentUtil commentUtil, BookUt
     /// <returns>Reference.cshtml</returns>
     public async Task<IActionResult> Reference()
     {
+        ViewData["Title"] = "Reference";
         // a list of current books is required
         var books = await bookUtil.GetAll();
         return View("Reference", new ReferenceViewModel{Books = books});
@@ -67,30 +70,13 @@ public class HomeController(VerseUtil verseUtil, CommentUtil commentUtil, BookUt
     [HttpPost]
     public async Task<IActionResult> PostSearch([FromBody] VerseSearchModel verseSearchModel)
     {
-        List<VerseViewModel> searchResults = [];
-        // add verse name results to general search results
-        if (verseSearchModel.SearchInVerseName)
-        {
-            searchResults.AddRange(await verseUtil.SearchInTitle(verseSearchModel.SearchTerm, verseSearchModel.Testament, verseSearchModel.MatchBy));
-        }
-        // mark the point where name results end and text results start
-        var flipIndex = searchResults.Count - 1;
-        // add verse text results to general search results
-        if (verseSearchModel.SearchInVerseText)
-        {
-            searchResults.AddRange(await verseUtil.SearchInVerse(verseSearchModel.SearchTerm, verseSearchModel.Testament, verseSearchModel.MatchBy));
-        }
+        var searchResults = await verseUtil.SearchInVerse(verseSearchModel.SearchTerm, verseSearchModel.Testament, verseSearchModel.MatchBy, verseSearchModel.PageNum);
         // map VerseViewModel to VerseSearchViewModel
-        var toModel = verseUtil.MapToSearchModel(searchResults, flipIndex);
-        // formatted UI string for the name & text searched in params
-        var searchedIn = "";
-        if (verseSearchModel.SearchInVerseText) searchedIn += "Text";
-        if (verseSearchModel.SearchInVerseText && verseSearchModel.SearchInVerseName) searchedIn += ", ";
-        if (verseSearchModel.SearchInVerseName) searchedIn += "Name";
+        var toModel = verseUtil.MapToSearchModel(searchResults.Item1);
         // header view model
         var verseHeader = new VerseSearchHeaderModel
-            { ResultCount = toModel.Count, SearchedIn = searchedIn == "" ? "Nothing" : searchedIn };
-        return PartialView("_VerseSearch", new VerseSearchUlModel{VerseHeader = verseHeader, VerseSearches = toModel});
+            { TotalCount = searchResults.Item2, StartedAt = 25*verseSearchModel.PageNum };
+        return PartialView("_VerseSearch", new VerseSearchUlModel{VerseHeader = verseHeader, VerseSearches = toModel, Page = verseSearchModel.PageNum});
     }
     /// <summary>
     /// get the comments modal for a verse
@@ -168,5 +154,16 @@ public class HomeController(VerseUtil verseUtil, CommentUtil commentUtil, BookUt
         // map header to view model
         var headerModel = new VerseHeaderModel { HeaderText = header.text, HeaderTestament = header.testament };
         return PartialView("_VerseRef", new VerseRefUlModel{VerseHeader = headerModel, VerseRefs = cc});
+    }
+
+    [HttpGet]
+    public IActionResult GetDesktopSearchInput()
+    {
+        return PartialView("_SearchInputDesktop");
+    }
+    [HttpGet]
+    public IActionResult GetMobileSearchInput()
+    {
+        return PartialView("_SearchInputMobile");
     }
 }

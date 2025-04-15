@@ -21,7 +21,9 @@
     {
         <li class="list-group-item" style="cursor:pointer;" id="verse-li-@v.VerseId" onclick="loadComments(@v.VerseId)">
             <!--<span class="badge bg-primary">@v.Testament</span>-->
-            <span class="badge bg-secondary"><span id="comment-count-num-@v.VerseId">@v.CommentCount</span> comments</span>
+            <div class="d-flex flex-row gap-1 justify-content-lg-start justify-content-center">
+                <span class="badge bg-secondary"><span id="comment-count-num-@v.VerseId">@v.CommentCount</span> comments</span>
+            </div>
             @Html.Partial("_Verse", v)
         </li>
     }

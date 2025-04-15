@@ -1,0 +1,56 @@
+﻿<div class="search-input-placeholder accordion d-block d-lg-none w-100" id="search-input-accordion">
+    <div class="accordion-item w-100">
+        <h2 class="accordion-header" id="search-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#search-collapse" aria-expanded="true" aria-controls="search-collapse">
+                Search Verses
+            </button>
+        </h2>
+        <div id="search-collapse" class="accordion-collapse collapse show" aria-labelledby="search-header" data-bs-parent="#search-input-accordion">
+            <div class="accordion-body w-100 p-2 d-flex flex-lg-row flex-column gap-2 justify-content-center align-items-center">
+                <label for="search-term">Search Term</label>
+                <input class="form-control w-100" type="text" id="search-term" onchange="searchInputChange()" name="searchTerm" placeholder="Enter search here..."/>
+                <div class="dropdown align-items-center justify-content-center w-100">
+                    <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="testament-dropdown-dt" data-bs-toggle="dropdown" aria-expanded="false">
+                        Testament
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="testament-dropdown">
+                        <li>
+                            <label for="search-in-ot">Old Testament</label>
+                            <input type="checkbox" checked id="search-in-ot"/>
+                        </li>
+                        <li>
+                            <label for="search-in-nt">New Testament</label>
+                            <input type="checkbox" checked id="search-in-nt"/>
+                        </li>
+                    </ul>
+                </div>
+                <div class="dropdown align-items-center justify-content-center w-100">
+                    <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="match-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Match By
+                    </button>
+                    <ul class="dropdown-menu" style="text-align: left; padding-left: 25%" aria-labelledby="match-dropdown">
+                        <li class="form-check">
+                            <input class="form-check-input" type="radio" name="match-radio" value="any" id="match-radio-any" checked/>
+                            <label class="form-check-label" for="match-radio-any">
+                                Any Text
+                            </label>
+                        </li>
+                        <li class="form-check">
+                            <input class="form-check-input" type="radio" name="match-radio" value="word" id="match-radio-word"/>
+                            <label class="form-check-label" for="match-radio-word">
+                                Full Word
+                            </label>
+                        </li>
+                        <li class="form-check">
+                            <input class="form-check-input" type="radio" name="match-radio" value="phrase" id="match-radio-phrase"/>
+                            <label class="form-check-label" for="match-radio-phrase">
+                                Full Phrase
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+                <button class="btn btn-primary w-100" onclick="doSearch(0)">Search</button>
+            </div>
+        </div>
+    </div>
+</div>

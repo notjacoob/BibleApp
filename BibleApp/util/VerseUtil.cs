@@ -103,7 +103,7 @@ public class VerseUtil(DbAccessor config)
     /// <param name="testament">the testaments to search in</param>
     /// <param name="matchBy">the method of matching</param>
     /// <returns>a view model of all the matched verses</returns>
-    public async Task<IEnumerable<VerseViewModel>> SearchInTitle(string search, SearchInTestament testament, string matchBy)
+    public async Task<IEnumerable<VerseViewModel>> SearchInTitle(string search, SearchInTestament testament, string matchBy, int pageNum)
     {
         await using var verseData = new AsvDataContext(config);
         List<VerseViewModel> verses = [];
@@ -131,26 +131,43 @@ public class VerseUtil(DbAccessor config)
     /// <param name="testament">the testaments to search in</param>
     /// <param name="matchBy">the method of matching</param>
     /// <returns>a view model of all the matched verses</returns>
-    public async Task<IEnumerable<VerseViewModel>> SearchInVerse(string search, SearchInTestament testament, string matchBy)
+    public async Task<(List<VerseViewModel>, int)> SearchInVerse(string search, SearchInTestament testament, string matchBy, int pageNum)
     {
         await using var verseData = new AsvDataContext(config);
-        List<VerseViewModel> verses = [];
-        var versesDb = await verseData.Verses.Include(e => e.Book).Include(e => e.Comments).ToListAsync();
-        foreach (var verseDataVerse in versesDb)
+        var versesDb = verseData.Verses;
+        IQueryable<VerseModel> versesWithSearch;
+        switch (matchBy)
         {
-            if (testament == SearchInTestament.Both || verseDataVerse.Book.BookTestament == testament.ToString())
-            {
-                
-                if (Match(search, verseDataVerse.VerseText, matchBy))
-                {
-                    var verseTitle = FullVerseName(verseDataVerse);
-                    var cc = verseDataVerse.Comments.Count;
-                    var viewModel = new VerseViewModel{VerseTitle = verseTitle, VerseText = verseDataVerse.VerseText, Testament = ToFormattedString(verseDataVerse.Book.BookTestament), VerseId = verseDataVerse.Id, CommentCount = cc};
-                    verses.Add(viewModel);
-                }
-            }
+            case "any":
+                versesWithSearch = versesDb.Where(v => EF.Functions.Like(v.VerseText, $"%{search}%"));
+                break;
+            case "word":
+                versesWithSearch = versesDb.Where(v => 
+                    EF.Functions.Like(v.VerseText, $"% {search} %")
+                    || EF.Functions.Like(v.VerseText, $"% {search}")
+                    || EF.Functions.Like(v.VerseText, $"{search} %")
+                    || EF.Functions.Like(v.VerseText, $"{search}"));
+                break;
+            default:
+                versesWithSearch = versesDb.Where(v => v.VerseText == search);
+                break;
         }
-        return verses;
+        
+        var vc = versesWithSearch.Count();
+        
+        var versesFromDb = await versesWithSearch.Skip(pageNum*25).Take(25).Include(v => v.Comments).Include(v => v.Book).ToListAsync();
+
+        var filteredVerses = versesFromDb.Select(v =>
+        {
+            var verseTitle = FullVerseName(v);
+            var cc = v.Comments.Count;
+            return new VerseViewModel
+            {
+                VerseTitle = verseTitle, VerseText = v.VerseText, Testament = ToFormattedString(v.Book.BookTestament),
+                VerseId = v.Id, CommentCount = cc
+            };
+        }).ToList();
+        return (filteredVerses, vc);
     }
     /// <summary>
     /// map a list of verse models to searchable models using a radix
@@ -158,28 +175,17 @@ public class VerseUtil(DbAccessor config)
     /// <param name="verses">the verses to map</param>
     /// <param name="flipIndex">the radix at which old testament switches to new testament</param>
     /// <returns>a list of mapped verses</returns>
-    public List<VerseSearchViewModel> MapToSearchModel(List<VerseViewModel> verses, int flipIndex)
+    public List<VerseSearchViewModel> MapToSearchModel(List<VerseViewModel> verses)
     {
         List<string> existingNames = [];
         List<VerseSearchViewModel> verseSearchResults = [];
-        var i = 0;
         foreach (var v in verses)
         {
             if (!existingNames.Contains(v.VerseTitle))
             {
-                string foundIn;
                 existingNames.Add(v.VerseTitle);
-                if (i <= flipIndex)
-                {
-                    foundIn = "Verse Name";
-                }
-                else
-                {
-                    foundIn = "Verse Text";
-                }
-                verseSearchResults.Add(new VerseSearchViewModel{FoundIn = foundIn, VerseVm = v});
+                verseSearchResults.Add(new VerseSearchViewModel{VerseVm = v});
             }
-            i++;
         }
         return verseSearchResults;
     }

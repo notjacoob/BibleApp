@@ -1,8 +1,9 @@
 @using BibleApp.util
 @model BibleApp.Models.View.VerseSearchUlModel
-@inject VerseUtil VerseUtil
 
 <ul class="list-group" id="search-results">
+    <input type="hidden" id="page-num" value="@Model.Page"/>
+    <input type="hidden" id="total-results" value="@Model.VerseHeader.TotalCount"/>
     <li class="list-group-item d-flex flex-row justify-content-between align-items-center">
         <div class="d-flex flex-row gap-2 align-items-center justify-content-center">
             <a class="h-100 align-items-center justify-content-center" style="cursor: pointer;" onclick="searchShare()">
@@ -10,20 +11,25 @@
                     <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5m-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3"/>
                 </svg>
             </a>
-            <span id="chapter-header-txt">Found @Model.VerseHeader.ResultCount results</span>
         </div>
         <div class="d-flex flex-row gap-2">
-            <span id="chapter-header-testament" class="badge bg-primary">Searched in @Model.VerseHeader.SearchedIn</span>
+            <span id="chapter-header-testament" class="badge bg-primary">Showing results @Model.VerseHeader.StartedAt-@(Model.VerseHeader.StartedAt + @Model.VerseSearches.Count()) out of @Model.VerseHeader.TotalCount</span>
             <span id="chapter-header-loadtime" class="badge bg-secondary-subtle">Took <span id="chapter-header-loadtime-num"></span>s</span>
         </div>
     </li>
     @foreach (var v in Model.VerseSearches)
     {
-        <li class="list-group-item" style="cursor: pointer;" id="verse-li-@v.VerseVm.VerseId" onclick="loadComments(@v.VerseVm.VerseId)">
-            <span class="badge bg-primary">@v.FoundIn</span>
-            <span class="badge bg-primary">@v.VerseVm.Testament</span>
-            <span class="badge bg-secondary"><span id="comment-count-num-@v.VerseVm.VerseId">@v.VerseVm.CommentCount</span> comments</span>
+        <li class="list-group-item justify-content-lg-between align-items-center" style="cursor: pointer;" id="verse-li-@v.VerseVm.VerseId" onclick="loadComments(@v.VerseVm.VerseId)">
+            <div class="d-flex flex-row gap-1 justify-content-lg-start justify-content-center">
+                <span class="badge bg-primary">@v.VerseVm.Testament</span>
+                <span class="badge bg-secondary"><span id="comment-count-num-@v.VerseVm.VerseId">@v.VerseVm.CommentCount</span> comments</span>
+            </div>
             @Html.Partial("_Verse", v.VerseVm)
         </li>
     }
+    <li class="list-group-item d-flex flex-row justify-content-center align-items-center text-center gap-3">
+        <button onclick="toPage(@Model.Page, 'dec')" class="btn btn-secondary">Previous Page</button>
+        <span class="d-flex flex-row align-items-center justify-content-center gap-2">Page <input type="number" id="page-input" class="form-control w-25" onchange="pageInputChange()" value="@(Model.Page+1)"/> / @(Math.Ceiling(Model.VerseHeader.TotalCount/25.0))</span>
+        <button onclick="toPage(@Model.Page, 'inc')" class="btn btn-secondary">Next Page</button>
+    </li>
 </ul>

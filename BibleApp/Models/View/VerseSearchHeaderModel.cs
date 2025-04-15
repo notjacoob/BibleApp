@@ -5,6 +5,6 @@
 /// </summary>
 public class VerseSearchHeaderModel
 {
-    public int ResultCount { get; set; }
-    public string SearchedIn { get; set; } = "None";
+    public int TotalCount { get; set; }
+    public int StartedAt { get; set; }
 }

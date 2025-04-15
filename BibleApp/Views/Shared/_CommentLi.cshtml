@@ -1,5 +1,6 @@
 @model BibleApp.Models.DB.CommentModel
-<li class="list-group-item d-flex flex-row justify-content-between align-items-center comment-li" id="comment-@Model.Id">
+<li class="list-group-item d-flex flex-lg-row flex-column justify-content-between align-items-center comment-li" id="comment-@Model.Id">
+    <span class="ms-1 badge bg-secondary-subtle align-self-center align-self-lg-auto mb-2 mb-lg-0 d-block d-lg-none" style="color: white;">@Model.CreatedAt</span>
     <div class="d-flex flex-row align-items-center justify-content-center gap-1 text-center">
         <a class="btn-close" style="cursor: pointer;" onclick="deleteComment(@Model.VerseId, @Model.Id)"></a>
         <hr class="vr my-0 mx-1"/>
@@ -7,5 +8,5 @@
             @Model.Content
         </p>
     </div>
-    <span class="ms-1 badge bg-secondary-subtle" style="color: white;">@Model.CreatedAt</span>
+    <span class="ms-1 badge bg-secondary-subtle align-self-center align-self-lg-auto d-lg-block d-none" style="color: white;">@Model.CreatedAt</span>
 </li>
